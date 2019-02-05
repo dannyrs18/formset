@@ -108,12 +108,12 @@
         }
 
         addBotonAgregar();
-        showBotonEliminar();
         showBotonAgregar();
         $("#buttonAdd"+options.prefix).on('click', function(){
             addForms();
         })
         addBotonEliminar();
+        showBotonEliminar();
         $("#"+elemBase.attr('id')+" > .form input[id$='-DELETE'][type='button']").each(function(){
             $(this).click(function(){deleteForms($(this))})
         })
