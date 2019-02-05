@@ -36,8 +36,15 @@
                 $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").hide()
             }else{
                 $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").show()
-            }
-            
+            }   
+        }
+
+        var showBotonAdredar = function(){
+            if(parseInt(maxForms.val()) & parseInt(totalVisibleForms.val()) >= parseInt(maxForms.val())){
+                $("#"+elemBase.attr('id')+" #buttonAdd"+options.prefix).hide()
+            }else{
+                $("#"+elemBase.attr('id')+" #buttonAdd"+options.prefix).show()
+            }   
         }
 
         var deleteForms = function(forms){
@@ -45,6 +52,7 @@
             forms.closest('.form').hide();
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
             showBotonEliminar();
+            showBotonAdredar();
         }
 
         var addForms = function(){
@@ -69,6 +77,7 @@
             }); // Formatear valores ingresados del elemento a clonar
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
             showBotonEliminar();
+            showBotonAdredar();
         }
 
         var ocultarInicioForms = function(){
@@ -77,6 +86,7 @@
 
         addBotonAgregar();
         showBotonEliminar();
+        showBotonAdredar();
         $("#buttonAdd"+options.prefix).on('click', function(){
             addForms();
             // showBotonEliminar();
