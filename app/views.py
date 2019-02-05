@@ -18,15 +18,6 @@ def inicio(request):
         'fecha_publicacion': datetime.date.today(),
     },
     ]
-    data = {
-        'form-TOTAL_FORMS': '3', # total de forms
-        'form-INITIAL_FORMS': '2', # Cuantos estan iniciados 
-        'form-MAX_NUM_FORMS': '',
-        'form-0-titulo': 'Primer Titulo',
-        'form-0-fecha_publicacion': datetime.date.today(),
-        'form-1-titulo': 'Segundos Titulo',
-        'form-1-fecha_publicacion': datetime.date.today(),
-    }
     formset = ArticuloFormset(prefix="form")
     formset2 = ArticuloFormset(prefix="form2")
     if request.method == 'POST':

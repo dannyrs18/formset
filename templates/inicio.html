@@ -22,6 +22,13 @@
             </div>
             <br>
             <br>
+            <div id="formset2">{{ formset2.management_form }}
+                {% for form in formset2 %}
+                    <div class="form" >
+                        {{ form }}
+                    </div>
+                {% endfor %}
+            </div>
             <input type="submit" value="Enviar">
         </form>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,6 +37,10 @@
             $("#formset").mensaje({
                 nameButton: 'Agregar',
                 prefix: 'form'
+            });
+            $("#formset2").mensaje({
+                nameButton: 'Agregar',
+                prefix: 'form2'
             });
         </script>
     </body>

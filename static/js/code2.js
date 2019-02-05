@@ -65,7 +65,7 @@
          * @param button es el elemento de boton donde se genero el click
          */
         var deleteForms = function(button){
-            $("input[type='checkbox'][id='"+button.attr('id').slice(1)+"']").prop("checked", true);
+            $("#"+elemBase.attr('id')+" input[type='checkbox'][id='"+button.attr('id').slice(1)+"']").prop("checked", true);
             button.closest('.form').hide();
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
             showBotonEliminar();
@@ -104,7 +104,7 @@
          * Oculta los formularios eliminados al inicio que ya fueron enviados pero no se genero corretamente 
          */
         var hiddenInicioForms = function(){
-            $("input[type='checkbox'][checked][id$='-DELETE']").closest('.form').hide()
+            $("#"+elemBase.attr('id')+" input[type='checkbox'][checked][id$='-DELETE']").closest('.form').hide()
         }
 
         addBotonAgregar();
