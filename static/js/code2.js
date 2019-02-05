@@ -17,7 +17,7 @@
 
         var addBotonEliminar = function(){
             $("#"+elemBase.attr('id')+" input[id$='-DELETE']").each(function(){
-                $(this).after("<input type='button' value='"+options.nameButtonDelete+"' name='"+$(this).attr('id')+"'>")
+                $(this).after("<input type='button' value='"+options.nameButtonDelete+"' id='_"+$(this).attr('id')+"'>")
                 $(this).hide()
             })
             $("[for$='-DELETE']").remove()
@@ -37,14 +37,17 @@
             }else if (totalVisibleForms.val() < 2){
                 $("#"+elemBase.attr('id')+" input[type='button'][name$='-DELETE']").hide()
             }else {
-                $("#"+elemBase.attr('id')+" input[type='button'][name$='-DELETE']:not([checked])").show()
+                $("#"+elemBase.attr('id')+" input[type='button'][id$='-DELETE'])").show()
             }
         }
 
         var deleteForms = function(forms){
+            $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop("checked", true);
             forms.closest('.form').hide();
-            $("input[type='checkbox'][id="+forms.attr('name')+"]").prop('checked', true);
-            console.log($("input[type='checkbox'][id="+forms.attr('name')+"]").is(':checked'));
+            // console.log($("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").is(":checked"))
+            // $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop('checked', true);
+            // console.log(forms.attr('id').slice(1));
+            
             // totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
             // showBotonEliminar();
         }
@@ -63,13 +66,11 @@
             $("#"+elemBase.attr('id')+"> .form:last [name^='"+options.prefix+"']").each(function(){
                 $(this).attr('name', $(this).attr('name').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
             }); // cambia el valor de los name
-            $("#"+elemBase.attr('id')+"> .form:last [name$='-DELETE'][type='button']").each(function(){
-                $(this).attr('name', $(this).attr('name').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
+            $("#"+elemBase.attr('id')+"> .form:last [id$='-DELETE'][type='button']").each(function(){
+                $(this).attr('id', $(this).attr('id').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
             }); // cambia el valor de los name del boton ya que es especial al id del checkbox oculto
             $("#"+elemBase.attr('id')+"> .form:last [name^='"+options.prefix+"'][type!='button']").each(function(){
-                if($(this).val()){
-                    $(this).val('')
-                }
+                $(this).text('')
             }); // Formatear valores ingresados del elemento a clonar
             // totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
         }
@@ -78,17 +79,18 @@
             $("input[type='checkbox'][checked][id$='-DELETE']").closest('.form').hide()
         }
 
-        // ocultarInicioForms();
-        addBotonEliminar();
-        // addBotonAgregar();
+        addBotonAgregar();
         // showBotonEliminar();
-        // $("#buttonAdd"+options.prefix).on('click', function(){
-        //     addForms();
-        //     // showBotonEliminar();
-        // })
-        $("#"+elemBase.attr('id')+" > .form input[name$='-DELETE'][type='button']").each(function(){
+        $("#buttonAdd"+options.prefix).on('click', function(){
+            addForms();
+            // showBotonEliminar();
+        })
+        addBotonEliminar();
+        $("#"+elemBase.attr('id')+" > .form input[id$='-DELETE'][type='button']").each(function(){
             $(this).click(function(){deleteForms($(this))})
         })
+        ocultarInicioForms();
+        
     }
 
     $.fn.mensaje.defaults = {
@@ -96,4 +98,4 @@
         nameButton: 'Add',
         nameButtonDelete: 'Delete'
     }
-})(jQuery); 
+})(jQuery);
