@@ -1,3 +1,9 @@
+/**
+ * @Autor Danny Romero
+ * @Version 1.0
+ * @Proposito Manipulacion de formsets dinamicos para Django
+ */
+
 ;(function ($){
     $.fn.mensaje = function(opts){
         var options = $.extend( {}, $.fn.mensaje.defaults, opts ); // variable de opciones
@@ -10,11 +16,9 @@
         var totalVisibleForms = $('#id_' + options.prefix + '-TOT-VIS_FORMS');
         totalVisibleForms.val($("#"+elemBase.attr('id')+" input[type='checkbox'][id$='-DELETE']:not([checked])").length)
 
-        // console.log(totalForms.val());
-        // console.log(minForms.val());
-        // console.log(maxForms.val());
-        // console.log(totalVisibleForms);
-
+        /**
+         * Crear boton eliminar formulario
+         */
         var addBotonEliminar = function(){
             $("#"+elemBase.attr('id')+" input[id$='-DELETE']").each(function(){
                 $(this).after("<input type='button' value='"+options.nameButtonDelete+"' id='_"+$(this).attr('id')+"'>")
@@ -23,12 +27,18 @@
             $("[for$='-DELETE']").remove()
         }
 
+        /**
+         * Crear boton Agregar formulario
+         */
         var addBotonAgregar = function(){
             $("#"+elemBase.attr('id')).append("<div class='buttonContent'></div>")
             $("#"+elemBase.attr('id')+"> .form:last").clone(true, true).append(".buttonContent")
             $("#"+elemBase.attr('id')+" .buttonContent").html('<input type="button" value="'+options.nameButton+'" id="buttonAdd'+options.prefix+'"/>')
         }
 
+        /**
+         * Darle visibilidad dentro del DOM a boton eliminar
+         */
         var showBotonEliminar = function(){
             if(parseInt(minForms.val()) & parseInt(totalVisibleForms.val()) <= parseInt(minForms.val())){
                 $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").hide()
@@ -39,7 +49,10 @@
             }   
         }
 
-        var showBotonAdredar = function(){
+        /**
+         * Darle visibilidad dentro del DOM a boton agregar
+         */
+        var showBotonAgregar = function(){
             if(parseInt(maxForms.val()) & parseInt(totalVisibleForms.val()) >= parseInt(maxForms.val())){
                 $("#"+elemBase.attr('id')+" #buttonAdd"+options.prefix).hide()
             }else{
@@ -47,18 +60,25 @@
             }   
         }
 
-        var deleteForms = function(forms){
-            $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop("checked", true);
-            forms.closest('.form').hide();
+        /**
+         * Oculta los formularios para que django se encargue de eliminarlos
+         * @param button es el elemento de boton donde se genero el click
+         */
+        var deleteForms = function(button){
+            $("input[type='checkbox'][id='"+button.attr('id').slice(1)+"']").prop("checked", true);
+            button.closest('.form').hide();
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
             showBotonEliminar();
-            showBotonAdredar();
+            showBotonAgregar();
         }
 
+        /**
+         * Genera los formularios a partir de formularios hermanos limpios
+         */
         var addForms = function(){
             totalForms.val(parseInt(totalForms.val())+1);
             var regex = /\-{1}([0-9]{1,3})\-{1}/
-            $("#"+elemBase.attr('id')+"> .form:not([style]):last").clone(true).insertAfter($("#"+elemBase.attr('id')+"> .form:last")) // clona el ultimo form
+            $("#"+elemBase.attr('id')+"> .form:not([style]):last").clone(true, true).insertAfter($("#"+elemBase.attr('id')+"> .form:last")) // clona el ultimo form
             $("#"+elemBase.attr('id')+"> .form:last [class='errorlist']").remove() // Elimina errores que genero el ultimo form si al enviar el formulario se genero alguno
             $("#"+elemBase.attr('id')+"> .form:last [id^='id_"+options.prefix+"']").each(function(){
                 $(this).attr('id', $(this).attr('id').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
@@ -77,25 +97,27 @@
             }); // Formatear valores ingresados del elemento a clonar
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
             showBotonEliminar();
-            showBotonAdredar();
+            showBotonAgregar();
         }
 
-        var ocultarInicioForms = function(){
+        /**
+         * Oculta los formularios eliminados al inicio que ya fueron enviados pero no se genero corretamente 
+         */
+        var hiddenInicioForms = function(){
             $("input[type='checkbox'][checked][id$='-DELETE']").closest('.form').hide()
         }
 
         addBotonAgregar();
         showBotonEliminar();
-        showBotonAdredar();
+        showBotonAgregar();
         $("#buttonAdd"+options.prefix).on('click', function(){
             addForms();
-            // showBotonEliminar();
         })
         addBotonEliminar();
         $("#"+elemBase.attr('id')+" > .form input[id$='-DELETE'][type='button']").each(function(){
             $(this).click(function(){deleteForms($(this))})
         })
-        ocultarInicioForms();
+        hiddenInicioForms();
         
     }
 
