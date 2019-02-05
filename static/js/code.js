@@ -6,16 +6,16 @@
         var maxForms = $('#id_' + options.prefix + '-MAX_NUM_FORMS');
         var parentClass = totalForms.parent();
 
-        $(maxForms).after('<input type="hidden" name="'+options.prefix+'-COUNT_SHOW_FORM" value="'+3+'" id="id_'+options.prefix+'-COUNT_SHOW_FORM">')
-        var countShowForm = $('#id_' + options.prefix + '-COUNT_SHOW_FORM');
+        // $(maxForms).after('<input type="hidden" name="'+options.prefix+'-COUNT_SHOW_FORM" value="'+3+'" id="id_'+options.prefix+'-COUNT_SHOW_FORM">')
+        // var countShowForm = $('#id_' + options.prefix + '-COUNT_SHOW_FORM');
 
-        function sumCount(){
-            countShowForm.val(parseInt(countShowForm.val())+1)
-        }
+        // function sumCount(){
+        //     countShowForm.val(parseInt(countShowForm.val())+1)
+        // }
 
-        function restCount(){
-            countShowForm.val(parseInt(countShowForm.val())-1)
-        }
+        // function restCount(){
+        //     countShowForm.val(parseInt(countShowForm.val())-1)
+        // }
 
         function IdentifyElement(){ // Identificar si es table o algun otro elemento
             return !$('table[id="'+parentClass.attr('id')+'"').length
@@ -57,7 +57,7 @@
             totalForms.val(parseInt(totalForms.val())+1);
             var regex = /\-{1}([0-9]{1,3})\-{1}/
             $("#"+parentClass.attr('id')+"> .form:not([style]):last").clone(true).insertAfter($("#"+parentClass.attr('id')+"> .form:last")) // clona el ultimo form
-            $("#"+parentClass.attr('id')+"> .form:last [class='errorlist']").remove() // Elimina errores que genero el ultimo form si al enviar el formulario se genero algulo
+            $("#"+parentClass.attr('id')+"> .form:last [class='errorlist']").remove() // Elimina errores que genero el ultimo form si al enviar el formulario se genero alguno
             $("#"+parentClass.attr('id')+"> .form:last [id^='id_"+options.prefix+"']").each(function(){
                 $(this).attr('id', $(this).attr('id').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
             }); // cambia el valor del id
@@ -67,17 +67,20 @@
             $("#"+parentClass.attr('id')+"> .form:last [name^='"+options.prefix+"']").each(function(){
                 $(this).attr('name', $(this).attr('name').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
             }); // cambia el valor de los name
+            $("#"+parentClass.attr('id')+"> .form:last [name$='-DELETE'][type='button']").each(function(){
+                $(this).attr('name', $(this).attr('name').replace(regex, "-"+(parseInt(totalForms.val())-1)+"-"));
+            }); // cambia el valor de los name del boton ya que es especial al id del checkbox oculto
             $("#"+parentClass.attr('id')+"> .form:last [name^='"+options.prefix+"'][type!='button']").each(function(){
                 if($(this).val()){
                     $(this).val('')
                 }
-            }); // Formatear valores
-            sumCount();
+            }); // Formatear valores ingresados del elemento a clonar
+            // sumCount();
         }
 
         function addButtonDelete(){
             $("#"+parentClass.attr('id')+" input[id$='-DELETE']").each(function(){
-                $(this).parent().append("<input type='button' value='"+options.nameButtonDelete+"' name='"+$(this).attr('id')+"'>") 
+                $(this).parent().append("<input type='button' value='"+options.nameButtonDelete+"' name='"+$(this).attr('id')+"'>")                 
                 $(this).hide()
             })
             $("[for$='-DELETE']").remove()
@@ -85,9 +88,9 @@
 
         function deleteForms(form){
             form.parent().hide();
-            $("#"+parentClass.attr('id')+" input[type='checkbox'][id='"+form.attr('name')+"']").attr('checked', 'checked');
-            restCount();
-            showDeleteButton();
+            $("#"+parentClass.attr('id')+" input[type='checkbox'][id='"+form.attr('name')+"']").prop('checked', true)
+            // restCount();
+            // showDeleteButton();
         }
 
         addButtonDelete();
