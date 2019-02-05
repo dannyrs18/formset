@@ -6,9 +6,9 @@
         var maxForms = $('#id_' + options.prefix + '-MAX_NUM_FORMS');
         var elemBase = totalForms.parent();
 
-        // maxForms.after('<input type="hidden" name="'+options.prefix+'-TOT-VIS_FORMS" id="id_'+options.prefix+'-TOT-VIS_FORMS">')
-        // var totalVisibleForms = $('#id_' + options.prefix + '-TOT-VIS_FORMS');
-        // totalVisibleForms.val($("#"+elemBase.attr('id')+" input[type='checkbox'][id$='-DELETE']:not([checked])").length)
+        maxForms.after('<input type="hidden" name="'+options.prefix+'-TOT-VIS_FORMS" id="id_'+options.prefix+'-TOT-VIS_FORMS">')
+        var totalVisibleForms = $('#id_' + options.prefix + '-TOT-VIS_FORMS');
+        totalVisibleForms.val($("#"+elemBase.attr('id')+" input[type='checkbox'][id$='-DELETE']:not([checked])").length)
 
         // console.log(totalForms.val());
         // console.log(minForms.val());
@@ -44,11 +44,8 @@
         var deleteForms = function(forms){
             $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop("checked", true);
             forms.closest('.form').hide();
-            // console.log($("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").is(":checked"))
-            // $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop('checked', true);
-            // console.log(forms.attr('id').slice(1));
             
-            // totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
+            totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
             // showBotonEliminar();
         }
 
@@ -72,7 +69,9 @@
             $("#"+elemBase.attr('id')+"> .form:last [name^='"+options.prefix+"'][type!='button']").each(function(){
                 $(this).text('')
             }); // Formatear valores ingresados del elemento a clonar
-            // totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
+            totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
+            console.log(totalVisibleForms.val());
+            
         }
 
         var ocultarInicioForms = function(){
