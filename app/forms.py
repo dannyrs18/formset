@@ -8,4 +8,4 @@ class ArticuloForm(forms.Form):
     titulo = forms.CharField()
     fecha_publicacion = forms.DateField()
 
-ArticuloFormset = formset_factory(ArticuloForm, can_delete=True, extra=2)
+ArticuloFormset = formset_factory(ArticuloForm, can_delete=True, min_num=3)

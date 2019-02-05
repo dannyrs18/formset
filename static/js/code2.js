@@ -30,23 +30,21 @@
         }
 
         var showBotonEliminar = function(){
-            if (parseInt(minForms.val())){
-                if (totalVisibleForms.val() <= parseInt(minForms.val())){
-                    $("#"+elemBase.attr('id')+" input[type='button'][name$='-DELETE']").hide()
-                }
-            }else if (totalVisibleForms.val() < 2){
-                $("#"+elemBase.attr('id')+" input[type='button'][name$='-DELETE']").hide()
-            }else {
-                $("#"+elemBase.attr('id')+" input[type='button'][id$='-DELETE'])").show()
+            if(parseInt(minForms.val()) & parseInt(totalVisibleForms.val()) <= parseInt(minForms.val())){
+                $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").hide()
+            }else if(parseInt(totalVisibleForms.val()) < 2){
+                $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").hide()
+            }else{
+                $("#"+elemBase.attr('id')+" [type='button'][id$='-DELETE']").show()
             }
+            
         }
 
         var deleteForms = function(forms){
             $("input[type='checkbox'][id='"+forms.attr('id').slice(1)+"']").prop("checked", true);
             forms.closest('.form').hide();
-            
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) - 1)
-            // showBotonEliminar();
+            showBotonEliminar();
         }
 
         var addForms = function(){
@@ -70,8 +68,7 @@
                 $(this).text('')
             }); // Formatear valores ingresados del elemento a clonar
             totalVisibleForms.val(parseInt(totalVisibleForms.val()) + 1)
-            console.log(totalVisibleForms.val());
-            
+            showBotonEliminar();
         }
 
         var ocultarInicioForms = function(){
@@ -79,7 +76,7 @@
         }
 
         addBotonAgregar();
-        // showBotonEliminar();
+        showBotonEliminar();
         $("#buttonAdd"+options.prefix).on('click', function(){
             addForms();
             // showBotonEliminar();
